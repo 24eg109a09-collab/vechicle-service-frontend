@@ -1,7 +1,7 @@
-// Support both Vite dev proxy and direct backend access
-const API_BASE_URL = window.location.port === '5173' 
-  ? '/api/vehicles' 
-  : 'http://localhost:8080/api/vehicles';
+// Support environment variable (for Vercel/production), Vite dev proxy, and direct localhost backend
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL 
+  || (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api/vehicles` : null)
+  || (window.location.port === '5173' ? '/api/vehicles' : 'http://localhost:8080/api/vehicles');
 
 export const vehicleService = {
   async getAllVehicles(search = '', status = 'ALL') {
